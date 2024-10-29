@@ -42,28 +42,73 @@ var JSON_Parser = /** @class */ (function () {
     }
     JSON_Parser.prototype.fileContent = function (fileName) {
         return __awaiter(this, void 0, void 0, function () {
-            var content;
+            var data, parsedData, content;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, fs.promises.readFile(fileName, 'utf8')];
                     case 1:
-                        content = _a.sent();
-                        return [2 /*return*/, content];
+                        data = _a.sent();
+                        return [4 /*yield*/, this.parseData(data)];
+                    case 2:
+                        parsedData = _a.sent();
+                        content = data.trim();
+                        console.log(content);
+                        return [2 /*return*/, this.verifyContent(content)];
                 }
+            });
+        });
+    };
+    JSON_Parser.prototype.parseData = function (data) {
+        return __awaiter(this, void 0, void 0, function () {
+            var test, i;
+            return __generator(this, function (_a) {
+                test = data.split("");
+                console.log(test);
+                for (i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                }
+                return [2 /*return*/, ""];
+            });
+        });
+    };
+    JSON_Parser.prototype.verifyContent = function (content) {
+        return __awaiter(this, void 0, void 0, function () {
+            var stack, keyValue, keyPosition, i, current, check;
+            return __generator(this, function (_a) {
+                stack = [];
+                keyValue = [];
+                keyPosition = 0;
+                for (i = 0; i < content.length; i++) {
+                    current = content[i];
+                    // Check Brackets
+                    if (current == "{") {
+                        stack.push(current);
+                    }
+                    else if (current == "}") {
+                        check = stack[stack.length - 1];
+                        if (current == "}" && (check != "{" || stack.length == 0)) {
+                            return [2 /*return*/, false];
+                        }
+                        else {
+                            stack.pop();
+                        }
+                    }
+                }
+                return [2 /*return*/, stack.length === 0];
             });
         });
     };
     JSON_Parser.prototype.run = function (argv) {
         return __awaiter(this, void 0, void 0, function () {
-            var fileName, content;
+            var fileName, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         fileName = argv[0];
                         return [4 /*yield*/, this.fileContent(fileName)];
                     case 1:
-                        content = _a.sent();
-                        console.log(content);
+                        response = _a.sent();
+                        console.log(response);
                         return [2 /*return*/];
                 }
             });

@@ -86,6 +86,3 @@ class CCWC {
 
 const ccwc = new CCWC();
 ccwc.run(process.argv.slice(2))
-
-
-
